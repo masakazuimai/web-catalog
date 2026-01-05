@@ -1,0 +1,469 @@
+/* ==========================================================================
+   カタログ用CSS - Steve Jobsスタイル見開きレイアウト
+   ========================================================================== */
+
+/* リセット & ベーススタイル
+   ========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* カラーパレット */
+  --color-bg: #efefef;
+  --color-surface: #ffffff;
+  --color-text: #333333;
+  --color-text-muted: #999999;
+  --color-primary: #4a9eff;
+  --color-border: #e0e0e0;
+  --color-shadow: rgba(0, 0, 0, 0.2);
+
+  /* スペーシング */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+
+  /* トランジション */
+  --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 1s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* シャドウ */
+  --shadow-book: 0 0 20px rgba(0, 0, 0, 0.2);
+
+  /* Z-index管理 */
+  --z-flipbook: 1;
+  --z-slider: 10;
+  --z-guide: 30;
+  --z-loading: 40;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* ローディングオーバーレイ
+   ========================================================================== */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-loading);
+  transition: opacity var(--transition-normal), visibility var(--transition-normal);
+}
+
+.loading-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  margin-top: var(--spacing-md);
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+/* 初回ガイドオーバーレイ
+   ========================================================================== */
+.guide-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-guide);
+  transition: opacity var(--transition-slow), visibility var(--transition-slow);
+  backdrop-filter: blur(4px);
+}
+
+.guide-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.guide-content {
+  text-align: center;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.guide-icon {
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-md);
+  animation: slideHint 2s ease-in-out infinite;
+}
+
+@keyframes slideHint {
+  0%,
+  100% {
+    transform: translateX(-8px);
+  }
+  50% {
+    transform: translateX(8px);
+  }
+}
+
+.guide-text {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.hard {
+  background: #111;
+  color: #fff;
+}
+.cover-content {
+  color: #111;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  white-space: pre-line;
+}
+
+/* 表紙の裏 */
+.cover-inside {
+  width: 100%;
+  height: 100%;
+  padding: 60px 48px;
+  color: #222;
+  box-sizing: border-box;
+}
+
+.cover-inside h2 {
+  font-size: 20px;
+  margin-bottom: 24px;
+  letter-spacing: 0.08em;
+}
+
+.cover-inside p {
+  font-size: 14px;
+  line-height: 1.9;
+  margin-bottom: 16px;
+}
+
+/* Canvas - メインコンテナ（Steve Jobsスタイル）
+   ========================================================================== */
+#canvas {
+  width: 960px;
+  height: 600px;
+  margin: 100px auto 0;
+  position: relative;
+}
+
+/* Book Zoom - ズームトランジション用ラッパー
+   ========================================================================== */
+#book-zoom {
+  width: 100%;
+  height: 100%;
+  transition: transform var(--transition-slow);
+}
+
+#book-zoom.zoom-in {
+  transform: scale(1.1);
+}
+
+/* Catalog Book - フリップブック本体
+   ========================================================================== */
+.catalog-book {
+  width: 960px;
+  height: 600px;
+  position: relative;
+}
+
+/* ページスタイル
+   ========================================================================== */
+.page {
+  background: var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.page-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  position: relative;
+}
+
+.page-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+  display: block;
+}
+
+.page-image.loading {
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.page-image.loaded {
+  opacity: 1;
+}
+
+.page-image.error {
+  display: none;
+}
+
+/* 画像ローディング表示 */
+.page-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+/* 画像エラー表示 */
+.page-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #ff4a4a;
+}
+
+.page-error svg {
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--spacing-sm);
+}
+
+.page-error p {
+  font-size: 0.875rem;
+}
+
+/* Page Display - ページ番号表示
+   ========================================================================== */
+.page-display {
+  position: absolute;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: var(--color-text-muted);
+  user-select: none;
+  text-align: center;
+}
+
+#page-number {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* turn.js カスタマイズ
+   ========================================================================== */
+.turn-page {
+  background-color: var(--color-surface);
+}
+
+/* レスポンシブ対応
+   ========================================================================== */
+@media (max-width: 1200px) {
+  #canvas {
+    width: 800px;
+    height: 500px;
+    margin-top: 80px;
+  }
+
+  .catalog-book {
+    width: 800px;
+    height: 500px;
+  }
+
+  .slider-bar {
+    width: 500px;
+  }
+}
+
+@media (max-width: 1024px) {
+  #canvas {
+    width: 720px;
+    height: 450px;
+    margin-top: 60px;
+  }
+
+  .catalog-book {
+    width: 720px;
+    height: 450px;
+  }
+
+  .slider-bar {
+    width: 450px;
+  }
+}
+
+@media (max-width: 768px) {
+  #canvas {
+    width: 90vw;
+    height: calc(90vw * 0.625);
+    margin-top: 40px;
+  }
+
+  .catalog-book {
+    width: 90vw;
+    height: calc(90vw * 0.625);
+  }
+
+  .slider-bar {
+    width: 80vw;
+    bottom: -35px;
+  }
+
+  .page-display {
+    top: -35px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  #canvas {
+    width: 95vw;
+    height: calc(95vw * 0.625);
+    margin-top: 30px;
+  }
+
+  .catalog-book {
+    width: 95vw;
+    height: calc(95vw * 0.625);
+  }
+
+  .slider-bar {
+    width: 85vw;
+    bottom: -30px;
+  }
+
+  .page-display {
+    top: -30px;
+    font-size: 11px;
+  }
+
+  .guide-text {
+    font-size: 1rem;
+  }
+}
+
+/* タブレット横向き対応 */
+@media (orientation: landscape) and (max-height: 600px) {
+  #canvas {
+    margin-top: 40px;
+    height: 70vh;
+    width: calc(70vh / 0.625);
+  }
+
+  .catalog-book {
+    height: 70vh;
+    width: calc(70vh / 0.625);
+  }
+}
+
+/* ハイコントラストモード対応 */
+@media (prefers-contrast: high) {
+  .ui-slider-handle {
+    border-width: 3px !important;
+  }
+}
+
+/* リデュースモーション対応 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 印刷対応 */
+@media print {
+  body {
+    background: white;
+    overflow: visible;
+  }
+
+  .loading-overlay,
+  .guide-overlay,
+  .slider-bar,
+  .page-display {
+    display: none !important;
+  }
+
+  #canvas {
+    margin: 0;
+    width: 100%;
+    height: auto;
+  }
+
+  .page {
+    page-break-inside: avoid;
+  }
+}

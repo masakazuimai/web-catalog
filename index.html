@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <!-- Security: Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;" />
+    <title>Table Accessories Catalog</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- ローディングオーバーレイ -->
+    <div id="loadingOverlay" class="loading-overlay">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading catalog...</p>
+    </div>
+
+    <!-- 初回ガイド -->
+    <div id="guideOverlay" class="guide-overlay hidden">
+      <div class="guide-content">
+        <div class="guide-icon">
+          <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+            <path d="M10 30 L25 20 L25 40 Z" fill="currentColor" />
+            <path d="M30 20 L50 30 L30 40 Z" fill="currentColor" opacity="0.6" />
+          </svg>
+        </div>
+        <p class="guide-text">Drag corners to flip pages</p>
+      </div>
+    </div>
+
+    <!-- メインキャンバス -->
+    <div id="canvas">
+      <!-- フリップブック -->
+      <div id="book-zoom">
+        <div id="flipbook" class="catalog-book">
+          <!-- ページは動的に生成 -->
+        </div>
+      </div>
+
+      <!-- ページインジケーター -->
+      <div class="page-display"><span id="page-number">1-2</span> / <span id="total-pages">12</span></div>
+    </div>
+
+    <!-- jQuery + jQuery UI -->
+    <script src="libs/jquery.min.js"></script>
+    <script src="libs/jquery-ui.min.js"></script>
+    <!-- turn.js -->
+    <script src="libs/turn.min.js"></script>
+    <!-- hash.js -->
+    <script src="libs/hash.js"></script>
+    <!-- メインアプリ -->
+    <script src="app.js"></script>
+  </body>
+</html>

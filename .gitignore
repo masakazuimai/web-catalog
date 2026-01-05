@@ -1,0 +1,32 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Python
+*.py
+*.pyc
+__pycache__/
+venv/
+*.egg-info/
+
+# PDF files (already extracted)
+*.pdf
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Test files
+test.html
+debug.html
