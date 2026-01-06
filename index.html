@@ -11,6 +11,275 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <!-- ハンバーガーメニューボタン（モバイルのみ） -->
+    <button id="hamburger-menu-btn" class="hamburger-menu-btn" aria-label="メニューを開く">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+
+    <!-- ハンバーガーメニューパネル（モバイルのみ） -->
+    <div id="hamburger-menu" class="hamburger-menu">
+      <div class="hamburger-menu-header">
+        <h3 class="hamburger-menu-title">メニュー</h3>
+        <button id="hamburger-menu-close-btn" class="hamburger-menu-close-btn" aria-label="メニューを閉じる">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="hamburger-menu-content">
+        <!-- ページナビゲーション -->
+        <div class="hamburger-menu-section">
+          <div class="hamburger-page-nav-info"><span id="hamburger-page-number">1-2</span> / <span id="hamburger-total-pages">4</span></div>
+          <div class="hamburger-page-nav-buttons">
+            <button id="hamburger-first-page-btn" class="hamburger-nav-btn" aria-label="最初のページ">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="11 17 6 12 11 7"></polyline>
+                <polyline points="18 17 13 12 18 7"></polyline>
+              </svg>
+              <span>最初</span>
+            </button>
+            <button id="hamburger-prev-btn" class="hamburger-nav-btn" aria-label="前のページ">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+              <span>前へ</span>
+            </button>
+            <button id="hamburger-next-btn" class="hamburger-nav-btn" aria-label="次のページ">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+              <span>次へ</span>
+            </button>
+            <button id="hamburger-last-page-btn" class="hamburger-nav-btn" aria-label="最後のページ">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="13 17 18 12 13 7"></polyline>
+                <polyline points="6 17 11 12 6 7"></polyline>
+              </svg>
+              <span>最後</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 機能メニュー -->
+        <div class="hamburger-menu-section">
+          <button id="hamburger-sidebar-btn" class="hamburger-menu-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="18" rx="1"></rect>
+              <rect x="14" y="3" width="7" height="18" rx="1"></rect>
+            </svg>
+            <span>ページ一覧</span>
+          </button>
+          <button id="hamburger-notes-btn" class="hamburger-menu-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+            <span>メモ</span>
+          </button>
+          <button id="hamburger-sticky-btn" class="hamburger-menu-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 16V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z"></path>
+              <line x1="12" y1="11" x2="12" y2="17"></line>
+              <line x1="9" y1="14" x2="15" y2="14"></line>
+            </svg>
+            <span>付箋追加</span>
+          </button>
+          <button id="hamburger-sticky-list-btn" class="hamburger-menu-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="4" rx="1"></rect>
+              <rect x="3" y="10" width="18" height="4" rx="1"></rect>
+              <rect x="3" y="17" width="18" height="4" rx="1"></rect>
+            </svg>
+            <span>付箋一覧</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ハンバーガーメニューオーバーレイ（モバイルのみ） -->
+    <div id="hamburger-overlay" class="hamburger-overlay"></div>
+
+    <!-- 左上の固定ボタン群 -->
+    <div class="fixed-buttons">
+      <!-- サイドバートグルボタン -->
+      <button id="sidebar-toggle-btn" class="sidebar-toggle-btn" aria-label="サイドバーを開く" data-tooltip="ページ一覧を表示">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="18" rx="1"></rect>
+          <rect x="14" y="3" width="7" height="18" rx="1"></rect>
+        </svg>
+      </button>
+
+      <!-- メモトグルボタン -->
+      <button id="notes-toggle-btn" class="notes-toggle-btn" aria-label="メモを開く" data-tooltip="カタログ全体のメモ">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+        </svg>
+      </button>
+
+      <!-- 付箋トグルボタン -->
+      <button id="sticky-toggle-btn" class="sticky-toggle-btn" aria-label="付箋を追加" data-tooltip="ページに付箋を追加">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 16V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z"></path>
+          <line x1="12" y1="11" x2="12" y2="17"></line>
+          <line x1="9" y1="14" x2="15" y2="14"></line>
+        </svg>
+      </button>
+
+      <!-- 付箋一覧トグルボタン -->
+      <button id="sticky-list-toggle-btn" class="sticky-list-toggle-btn" aria-label="付箋一覧を開く" data-tooltip="全ての付箋を一覧表示">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="4" rx="1"></rect>
+          <rect x="3" y="10" width="18" height="4" rx="1"></rect>
+          <rect x="3" y="17" width="18" height="4" rx="1"></rect>
+        </svg>
+      </button>
+
+      <!-- ズームボタン群 -->
+      <div class="zoom-buttons">
+        <button id="zoom-in-btn" class="zoom-btn" aria-label="拡大" data-tooltip="拡大 (Ctrl+マウスホイール対応)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <line x1="11" y1="8" x2="11" y2="14"></line>
+            <line x1="8" y1="11" x2="14" y2="11"></line>
+          </svg>
+        </button>
+        <button id="zoom-out-btn" class="zoom-btn" aria-label="縮小" data-tooltip="縮小">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <line x1="8" y1="11" x2="14" y2="11"></line>
+          </svg>
+        </button>
+        <button id="zoom-reset-btn" class="zoom-btn" aria-label="リセット" data-tooltip="ズームをリセット">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <circle cx="11" cy="11" r="3"></circle>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- サイドバー -->
+    <div id="thumbnail-sidebar" class="sidebar">
+      <!-- サイドバーヘッダー -->
+      <div class="sidebar-header">
+        <h3 class="sidebar-title">Pages</h3>
+        <button id="sidebar-close-btn" class="sidebar-close-btn" aria-label="サイドバーを閉じる">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- サイドバーコンテンツ -->
+      <div class="sidebar-content">
+        <!-- サムネイルコンテナ -->
+        <div id="thumbnail-container" class="thumbnail-container">
+          <!-- サムネイルは動的に生成 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ページナビゲーション（画面左下固定） -->
+    <div class="page-nav-fixed">
+      <div class="page-nav-info"><span id="sidebar-page-number">1-2</span> / <span id="sidebar-total-pages">4</span></div>
+
+      <!-- ページジャンプ入力 -->
+      <div class="page-jump-container">
+        <input type="number" id="page-jump-input" class="page-jump-input" min="1" max="4" placeholder="P" aria-label="ページ番号を入力" />
+        <button id="page-jump-btn" class="page-jump-btn" aria-label="指定ページへジャンプ">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <div class="page-nav-buttons">
+        <button id="sidebar-first-page-btn" class="page-nav-fixed-btn" aria-label="最初のページ">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="11 17 6 12 11 7"></polyline>
+            <polyline points="18 17 13 12 18 7"></polyline>
+          </svg>
+        </button>
+        <button id="sidebar-prev-btn" class="page-nav-fixed-btn" aria-label="前のページ">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button id="sidebar-next-btn" class="page-nav-fixed-btn" aria-label="次のページ">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+        <button id="sidebar-last-page-btn" class="page-nav-fixed-btn" aria-label="最後のページ">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="13 17 18 12 13 7"></polyline>
+            <polyline points="6 17 11 12 6 7"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- メモパネル -->
+    <div id="notes-panel" class="notes-panel">
+      <div class="notes-panel-header">
+        <h3 class="notes-panel-title">メモ</h3>
+        <button id="notes-panel-close-btn" class="notes-panel-close-btn" aria-label="メモを閉じる">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="notes-panel-content">
+        <textarea id="catalog-notes" class="notes-textarea" placeholder="カタログに関するメモを入力してください...&#10;&#10;自動的に保存されます。"></textarea>
+        <div class="notes-footer">
+          <span class="notes-status" id="notes-status">保存済み</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 付箋一覧パネル -->
+    <div id="sticky-list-panel" class="sticky-list-panel">
+      <div class="sticky-list-panel-header">
+        <h3 class="sticky-list-panel-title">付箋一覧</h3>
+        <button id="sticky-list-panel-close-btn" class="sticky-list-panel-close-btn" aria-label="付箋一覧を閉じる">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="sticky-list-panel-content">
+        <div id="sticky-list-container" class="sticky-list-container">
+          <!-- 付箋一覧は動的に生成 -->
+          <div class="sticky-list-empty">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 16V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z"></path>
+            </svg>
+            <p>付箋がありません</p>
+            <small>左上の付箋ボタンから<br />カタログに付箋を追加できます</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- モバイル用オーバーレイ -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
     <!-- ローディングオーバーレイ -->
     <div id="loadingOverlay" class="loading-overlay">
       <div class="loading-spinner"></div>
@@ -39,8 +308,34 @@
         </div>
       </div>
 
-      <!-- ページインジケーター -->
-      <div class="page-display"><span id="page-number">1-2</span> / <span id="total-pages">12</span></div>
+      <!-- モバイル用ページナビゲーション（カタログ下） -->
+      <div class="mobile-page-nav">
+        <div class="mobile-page-nav-info"><span id="mobile-page-number">1-2</span> / <span id="mobile-total-pages">4</span></div>
+        <div class="mobile-page-nav-buttons">
+          <button id="mobile-first-page-btn" class="mobile-nav-btn" aria-label="最初のページ">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="11 17 6 12 11 7"></polyline>
+              <polyline points="18 17 13 12 18 7"></polyline>
+            </svg>
+          </button>
+          <button id="mobile-prev-btn" class="mobile-nav-btn" aria-label="前のページ">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button id="mobile-next-btn" class="mobile-nav-btn" aria-label="次のページ">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+          <button id="mobile-last-page-btn" class="mobile-nav-btn" aria-label="最後のページ">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="13 17 18 12 13 7"></polyline>
+              <polyline points="6 17 11 12 6 7"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- jQuery + jQuery UI -->
