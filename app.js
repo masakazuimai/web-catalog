@@ -795,9 +795,9 @@ function applyZoom() {
   const translateY = state.panOffsetY;
 
   // ページタイプに応じたオフセット
-  let pageOffsetX = "-16%"; // 表紙（デフォルト）
+  let pageOffsetX = "-12%"; // 表紙（デフォルト）
   if (elements.bookZoom.hasClass("spread-view")) {
-    pageOffsetX = "3%"; // 見開きは少し右にオフセット
+    pageOffsetX = "2%"; // 見開きは少し左にオフセット
   } else if (elements.bookZoom.hasClass("back-cover-view")) {
     pageOffsetX = "18%"; // 裏表紙は右にオフセット
   }
