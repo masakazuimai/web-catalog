@@ -10,15 +10,16 @@
    定数定義
    ========================================================================== */
 const CONFIG = {
-  // 画像ページ（実データ）
-  IMAGE_PAGES: 4,
+  // 画像ページ（実データ）- page-02〜page-07の6ページ
+  IMAGE_PAGES: 6,
 
   // 表紙/裏表紙（turn.js上のページとして追加）
   COVER_PAGES_FRONT: 2, // 表紙（表・裏）
   COVER_PAGES_BACK: 2, // 裏表紙（裏・表）
 
   IMAGE_BASE_PATH: "images/",
-  IMAGE_FORMAT: "jpg",
+  IMAGE_FORMAT: "jpeg",
+  COVER_IMAGE: "images/page-01.jpeg", // 表紙画像
 
   PRELOAD_RANGE: 2,
   GUIDE_STORAGE_KEY: "catalog_guide_shown",
@@ -220,9 +221,11 @@ function updateURL(pageNo) {
 
 /**
  * 画像パスを生成（imgNo: 1〜IMAGE_PAGES）
+ * 本文ページはpage-02から始まる（page-01は表紙用）
  */
 function getImagePath(imgNo) {
-  const paddedNo = String(imgNo).padStart(2, "0");
+  const actualPageNo = imgNo + 1; // imgNo=1 → page-02, imgNo=2 → page-03, ...
+  const paddedNo = String(actualPageNo).padStart(2, "0");
   return `${CONFIG.IMAGE_BASE_PATH}page-${paddedNo}.${CONFIG.IMAGE_FORMAT}`;
 }
 
@@ -482,14 +485,34 @@ function createPageElement(turnPageNo) {
   // 表紙（1,2）
   if (turnPageNo <= CONFIG.COVER_PAGES_FRONT) {
     page.addClass("hard");
-    const text = turnPageNo === 1 ? "TABLE ACCESSORIES\nPRODUCT CATALOG" : "";
 
-    page.append(
-      $("<div>", {
-        class: "cover-content",
-        text,
-      })
-    );
+    // 表紙 表（page-01.jpegを使用）
+    if (turnPageNo === 1) {
+      const content = $("<div>", { class: "page-content cover-page" });
+      const img = $("<img>", {
+        class: "page-image cover-image",
+        alt: "Cover",
+        src: CONFIG.COVER_IMAGE,
+      });
+
+      img.on("load", function () {
+        $(this).addClass("loaded");
+      });
+
+      img.on("error", function () {
+        $(this).addClass("error");
+        // エラー時はテキストにフォールバック
+        content.append(
+          $("<div>", {
+            class: "cover-content",
+            text: "TABLE ACCESSORIES\nPRODUCT CATALOG",
+          })
+        );
+      });
+
+      content.append(img);
+      page.append(content);
+    }
 
     // 表紙 裏
     if (turnPageNo === 2) {
@@ -628,6 +651,8 @@ function initializeTurnJS() {
         updateSlider(page);
         updateURL(page);
         preloadPriorityImages();
+        // ページめくり完了時にオフセットを更新
+        updatePageViewOffset();
 
         // サムネイルハイライト更新
         if (state.thumbnailsGenerated) {
@@ -719,6 +744,49 @@ function handlePageJump() {
    ズーム機能
    ========================================================================== */
 /**
+ * 現在表示されているビューのタイプを判定
+ * @returns 'front-cover' | 'back-cover' | 'spread'
+ */
+function getPageViewType() {
+  const view = $("#flipbook").turn("view") || [];
+  const backCoverStart = CONFIG.TOTAL_PAGES - CONFIG.COVER_PAGES_BACK + 1;
+
+  // 表紙のみ表示（1ページ目のみ、または1-2ページの見開き）
+  if (view.length > 0 && view.every(p => p === 0 || p <= CONFIG.COVER_PAGES_FRONT)) {
+    return 'front-cover';
+  }
+
+  // 裏表紙のみ表示
+  if (view.length > 0 && view.every(p => p === 0 || p >= backCoverStart)) {
+    return 'back-cover';
+  }
+
+  return 'spread';
+}
+
+/**
+ * 単ページ/見開き表示に応じたオフセットを更新
+ */
+function updatePageViewOffset() {
+  const viewType = getPageViewType();
+
+  // 全てのビュータイプクラスを削除
+  elements.bookZoom.removeClass("spread-view back-cover-view");
+
+  if (viewType === 'spread') {
+    elements.bookZoom.addClass("spread-view");
+  } else if (viewType === 'back-cover') {
+    elements.bookZoom.addClass("back-cover-view");
+  }
+  // front-coverはデフォルト（クラスなし）
+
+  // ズーム中の場合のみ再適用
+  if (state.zoomLevel !== 1) {
+    applyZoom();
+  }
+}
+
+/**
  * ズームを適用
  */
 function applyZoom() {
@@ -726,10 +794,24 @@ function applyZoom() {
   const translateX = state.panOffsetX;
   const translateY = state.panOffsetY;
 
-  elements.bookZoom.css({
-    transform: `scale(${scale}) translate(${translateX}px, ${translateY}px)`,
-    transformOrigin: "center center",
-  });
+  // ページタイプに応じたオフセット
+  let pageOffsetX = "-16%"; // 表紙（デフォルト）
+  if (elements.bookZoom.hasClass("spread-view")) {
+    pageOffsetX = "3%"; // 見開きは少し右にオフセット
+  } else if (elements.bookZoom.hasClass("back-cover-view")) {
+    pageOffsetX = "18%"; // 裏表紙は右にオフセット
+  }
+
+  // ズーム中のみtransformを適用、それ以外はCSSに任せる
+  if (scale !== 1 || translateX !== 0 || translateY !== 0) {
+    elements.bookZoom.css({
+      transform: `translateX(${pageOffsetX}) scale(${scale}) translate(${translateX}px, ${translateY}px)`,
+      transformOrigin: "center center",
+    });
+  } else {
+    // ズームなしの場合はCSSクラスに任せる
+    elements.bookZoom.css("transform", "");
+  }
 
   // ズーム時はクラスを追加（カーソル変更など）
   if (scale > 1) {
@@ -2203,6 +2285,8 @@ async function initialize() {
       updatePageIndicator(initialPage);
       updateNavigationButtons();
       updateSlider(initialPage);
+      // 初期ページの単ページ/見開きオフセットを適用
+      updatePageViewOffset();
 
       // 初期ページの付箋を表示
       const view = $("#flipbook").turn("view") || [];

@@ -216,8 +216,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* 左側のメニュー分、少し右に配置 */
-  transform: translateX(20px);
 }
 
 /* Book Zoom - ズームトランジション用ラッパー
@@ -225,14 +223,26 @@ body {
 #book-zoom {
   width: 100%;
   height: 100%;
-  transition: transform var(--transition-slow);
+  transition: transform var(--transition-normal);
   display: flex;
   align-items: center;
   justify-content: center;
+  /* 初期状態は表紙用（左にオフセット） */
+  transform: translateX(-16%);
 }
 
 #book-zoom.zoom-in {
   transform: scale(1.1);
+}
+
+/* 見開き表示時（少し右にオフセットしてメニュー回避） */
+#book-zoom.spread-view {
+  transform: translateX(3%);
+}
+
+/* 裏表紙表示時（右にオフセットして中央に） */
+#book-zoom.back-cover-view {
+  transform: translateX(18%);
 }
 
 /* Catalog Book - フリップブック本体
