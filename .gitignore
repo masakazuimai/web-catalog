@@ -2,31 +2,55 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+._*
 
-# Python
-*.py
-*.pyc
-__pycache__/
-venv/
-*.egg-info/
+# Windows
+Thumbs.db
+Desktop.ini
 
-# PDF files (already extracted)
-*.pdf
-
-# Logs
-*.log
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+*.code-workspace
 
 # Temporary files
 *.tmp
 *.bak
 *.swp
 *~
+*.log
 
-# IDE
-.vscode/
-.idea/
-*.sublime-*
+# PDF files (source PDFs)
+*.pdf
 
-# Test files
+# Python (if used for image extraction)
+*.py
+*.pyc
+__pycache__/
+venv/
+*.egg-info/
+
+# Node.js (if used for build tools)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Test/Debug files
 test.html
 debug.html
+test/
+debug/
+
+# Build output (if applicable)
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Backup files
+*.backup
+*.orig

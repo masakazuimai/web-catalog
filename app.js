@@ -555,6 +555,7 @@ function createPageElement(turnPageNo) {
               HP：<a href="https://rinia.work/" target="_blank">rinia.work</a><br>
               Contact：<a href="https://rinia.work/journal/contact/" target="_blank">お問い合わせはこちら</a>
             </p>
+            <p class="copyright">&copy; ${new Date().getFullYear()} RINIA. All rights reserved.</p>
         `,
         })
       );
