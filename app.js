@@ -520,15 +520,14 @@ function createPageElement(turnPageNo) {
         $("<div>", {
           class: "cover-inside",
           html: `
-          <h2>About this catalog</h2>
-          <p>
-            This catalog introduces our latest table accessories,
-            designed for professional and commercial use.
-          </p>
-          <p>
-            All products are available for bulk orders
-            and custom specifications.
-          </p>
+          <h2>本カタログについて</h2>
+            <p>
+              本カタログは、RINIAが制作したカタログ・メニュー表のデザインサンプルです。<br>
+              実際の業務・商業用途を想定し、見やすさと使いやすさを重視して設計しています。
+            </p>
+            <p>
+              掲載内容は一例であり、デザイン・構成・仕様は目的に応じて柔軟にカスタマイズ可能です。
+            </p>
         `,
         })
       );
@@ -547,15 +546,15 @@ function createPageElement(turnPageNo) {
         $("<div>", {
           class: "cover-inside",
           html: `
-          <h2>Company Information</h2>
-          <p>
-            Thank you for viewing our catalog.<br>
-            For inquiries, please contact us using the information below.
-          </p>
-          <p>
-            Email: info@example.com<br>
-            Website: www.example.com
-          </p>
+          <h2>RINIAについて</h2>
+            <p>
+              RINIAは、成果にこだわる制作ディレクターチームです。<br>
+              Webサイト制作、デザイン、映像などを通じて、制作で終わらず、成果が出るまで改善と実行を担います。
+            </p>
+            <p>
+              HP：<a href="https://rinia.work/" target="_blank">rinia.work</a><br>
+              Contact：<a href="https://rinia.work/journal/contact/" target="_blank">お問い合わせはこちら</a>
+            </p>
         `,
         })
       );
@@ -752,16 +751,16 @@ function getPageViewType() {
   const backCoverStart = CONFIG.TOTAL_PAGES - CONFIG.COVER_PAGES_BACK + 1;
 
   // 表紙のみ表示（1ページ目のみ、または1-2ページの見開き）
-  if (view.length > 0 && view.every(p => p === 0 || p <= CONFIG.COVER_PAGES_FRONT)) {
-    return 'front-cover';
+  if (view.length > 0 && view.every((p) => p === 0 || p <= CONFIG.COVER_PAGES_FRONT)) {
+    return "front-cover";
   }
 
   // 裏表紙のみ表示
-  if (view.length > 0 && view.every(p => p === 0 || p >= backCoverStart)) {
-    return 'back-cover';
+  if (view.length > 0 && view.every((p) => p === 0 || p >= backCoverStart)) {
+    return "back-cover";
   }
 
-  return 'spread';
+  return "spread";
 }
 
 /**
@@ -773,9 +772,9 @@ function updatePageViewOffset() {
   // 全てのビュータイプクラスを削除
   elements.bookZoom.removeClass("spread-view back-cover-view");
 
-  if (viewType === 'spread') {
+  if (viewType === "spread") {
     elements.bookZoom.addClass("spread-view");
-  } else if (viewType === 'back-cover') {
+  } else if (viewType === "back-cover") {
     elements.bookZoom.addClass("back-cover-view");
   }
   // front-coverはデフォルト（クラスなし）
@@ -1343,9 +1342,12 @@ function setupStickyEvents(sticky, pageNo, stickyId) {
   const dragHandle = sticky.find(".sticky-drag-handle");
 
   // テキスト変更時の保存
-  textarea.on("input", debounce(() => {
-    updateStickyText(pageNo, stickyId, textarea.val());
-  }, 500));
+  textarea.on(
+    "input",
+    debounce(() => {
+      updateStickyText(pageNo, stickyId, textarea.val());
+    }, 500)
+  );
 
   // 削除ボタン
   deleteBtn.on("click", (e) => {
@@ -2165,13 +2167,16 @@ function setupEventListeners() {
     localStorage.setItem(CONFIG.GUIDE_STORAGE_KEY, "true");
   });
 
-  $(window).on("resize", debounce(() => {
-    handleResize();
-    // デスクトップに戻ったらオーバーレイを非表示
-    if (window.innerWidth > 768 && elements.sidebarOverlay) {
-      elements.sidebarOverlay.removeClass("active");
-    }
-  }, CONFIG.DEBOUNCE_DELAY));
+  $(window).on(
+    "resize",
+    debounce(() => {
+      handleResize();
+      // デスクトップに戻ったらオーバーレイを非表示
+      if (window.innerWidth > 768 && elements.sidebarOverlay) {
+        elements.sidebarOverlay.removeClass("active");
+      }
+    }, CONFIG.DEBOUNCE_DELAY)
+  );
 }
 
 /* ==========================================================================
